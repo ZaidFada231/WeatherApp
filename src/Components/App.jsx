@@ -12,40 +12,44 @@ function App() {
   const API_url = new URL("http://api.openweathermap.org/geo/1.0/direct?");
   API_url.searchParams.append("q", city);
   API_url.searchParams.append("appid", API_key);
-
+  
   useEffect(() => {
     fetch(API_url)
       .then((respone) => respone.json())
       .then((data) => setApiData(data))
       .catch((error) => console.log("Error: ", error))
-  }, [])
+  }, [city])
   const inputHandler = (event) =>{
     setGetCity(event.target.value);
   };
   const submitHandler = () => {
     setCity(getCity);
+    API_url.searchParams.set("q", city);
     setLat(apiData[0].lat);
     setLon(apiData[0].lon);
   };
-  console.log(apiData);
-  console.log(city);
+  console.log(lat);
+  console.log(lon);
+  
   return (
     <>
       <h3>Weather App</h3>
-      <label for="location-name" class="col-form-label">
+      <label class="col-form-label">
             Enter Location :
           </label>
-        <div class="col-auto">
+        <div >
           <input
             type="text"
             id="location-name"
-            class="form-control"
             onChange={inputHandler}
             value={getCity}
           />
         </div>
         <button className="btn btn-primary mt-2" onClick={submitHandler}>
           Search
+        </button>
+        <button className="btn btn-primary mt-2" onClick={submitHandler}>
+          Go!
         </button>
     </>
   );
