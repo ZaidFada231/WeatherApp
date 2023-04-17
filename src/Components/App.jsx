@@ -3,6 +3,7 @@ import './App.css';
 
 function App() {
   const [apiData, setApiData] = useState({});
+  const [weatherData, setWeatherData] = useState({});
   const [getCity, setGetCity] = useState('London');
   const [city, setCity] = useState('London');
   const [lat, setLat] = useState(51.5073219);
@@ -28,8 +29,22 @@ function App() {
     setLat(apiData[0].lat);
     setLon(apiData[0].lon);
   };
-  console.log(lat);
-  console.log(lon);
+  console.log(API_url);
+
+  function GetWeather(){
+    const weather_URL = new URL("https://api.openweathermap.org/data/2.5/onecall?");
+    weather_URL.searchParams.append("lat", lat);
+    weather_URL.searchParams.append("lon", lon);
+    weather_URL.searchParams.append("appid", API_key);
+
+    useEffect(() => {
+      fetch(weather_URL)
+        .then((respone) => respone.json())
+        .then((data) => setWeatherData(data))
+        .catch((error) => console.log("Error: ", error))
+    }, [lat, lon]);
+    console.log(weatherData);
+  }
   
   return (
     <>
@@ -46,11 +61,9 @@ function App() {
           />
         </div>
         <button className="btn btn-primary mt-2" onClick={submitHandler}>
-          Search
+          Search: Hit 2 times
         </button>
-        <button className="btn btn-primary mt-2" onClick={submitHandler}>
-          Go!
-        </button>
+        
     </>
   );
 }
