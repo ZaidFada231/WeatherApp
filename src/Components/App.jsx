@@ -30,19 +30,35 @@ function App() {
     setLon(apiData[0].lon);
   };
   useEffect(() => {
-    if (lat && lon) {
-      fetch(
-        `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=${API_key}`
-      )
-        .then((respone) => respone.json())
-        .then((data) => setWeatherData(data))
-        .catch((error) => console.log("Error: ", error));
-    }
+    fetch(
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=${API_key}`
+    )
+      .then((respone) => respone.json())
+      .then((data) => setWeatherData(data))
+      .catch((error) => console.log("Error: ", error));
   }, [lat, lon]);
 
-  const kelvinToFarenheit = (k) => {
+  const kelvinToC = (k) => {
     return (k - 273.15).toFixed(2);
   };
+  const getNext24HoursData = () => {
+    const now = new Date();
+    const next24HoursData = weatherData.hourly.slice(0, 24).map((hour) => {
+      const time = new Date(now.getTime() + hour.dt * 1000);
+      const formattedTime = time.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      return {
+        temp: kelvinToC(hour.temp),
+        icon: hour.weather[0].icon,
+        time: formattedTime,
+      };
+    });
+    return next24HoursData;
+  };
+
+  console.log(weatherData);
 
   return (
     <>
@@ -59,23 +75,40 @@ function App() {
       <button className="btn btn-primary mt-2" onClick={submitHandler}>
         Search: Hit 2 times
       </button>
-
-      {/* {weatherData && (
-        <div>
+      <br></br>
+      {weatherData.current && (
+        <>
           <img
-            src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
+            src={`https://openweathermap.org/img/wn/${weatherData.current.weather[0].icon}@2x.png`}
             alt="weather status icon"
             className="weather-icon"
           />
           <p className="h2">
-            Currently: {kelvinToFarenheit(weatherData.current.temp)}&deg; F
+            Currently: {kelvinToC(weatherData.current.temp)}&deg; C
           </p>
           <p className="h3">
-            Feels like: {kelvinToFarenheit(weatherData.current.feels_like)}&deg;
-            F
+            Feels like: {kelvinToC(weatherData.current.feels_like)}&deg; C
           </p>
-        </div>
-      )} */}
+          <div style={{ display: "flex", flexWrap: "wrap" }}>
+            {weatherData.hourly.slice(0, 24).map((hour) => {
+              console.log(hour);
+              const date = new Date(hour.dt * 1000);
+              const time = `${date.getHours()}:00`;
+              return (
+                <div key={hour.dt}>
+                  <p>{kelvinToC(hour.temp)}&deg; C</p>
+                  <p>{time}</p>
+                  <img
+                    src={`https://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`}
+                    alt="weather status icon"
+                    className="weather-icon"
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
     </>
   );
 }
