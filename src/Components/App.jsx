@@ -98,14 +98,16 @@ function App() {
             }}
           >
             <Card>
-              <CardContent>
+              <CardContent align="center">
+                <Typography variant="h5">Currently</Typography>
+
                 <CardMedia
                   image={`https://openweathermap.org/img/wn/${weatherData.current.weather[0].icon}@2x.png`}
                   alt="weather status icon"
                   className="weather-icon-main"
                 />
                 <Typography>
-                  Currently: {kelvinToC(weatherData.current.temp)}&deg; C
+                  {kelvinToC(weatherData.current.temp)}&deg; C
                 </Typography>
                 <Typography>
                   Feels like: {kelvinToC(weatherData.current.feels_like)}&deg; C
@@ -118,20 +120,20 @@ function App() {
             <br></br>
             <Grid container spacing={1}>
               {weatherData.hourly.slice(0, 24).map((hour) => {
-                console.log(hour);
                 const date = new Date(hour.dt * 1000);
                 const time = `${date.getHours()}:00`;
                 return (
                   <Grid item xs={1} sm={1} md={1}>
                     <Card className="card" variant="outlined" key={hour.dt}>
                       <CardContent
+                        align="center"
                         style={{
                           justifyContent: "center",
                           height: 75,
                           width: 75,
                         }}
                       >
-                        <Typography>{time}</Typography>
+                        <Typography variant="h6">{time}</Typography>
                         <CardMedia
                           image={`https://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`}
                           alt="weather status icon"
@@ -147,6 +149,46 @@ function App() {
           </div>
           <div>
             <h4 className="weather-info">This Week:</h4>
+            <br></br>
+            <Grid container spacing={1}>
+              {weatherData.daily.map((day) => {
+                const daysOfWeek = [
+                  "Sunday",
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday",
+                ];
+                const date = new Date(day.dt * 1000);
+                const currentDate = new Date();
+                let time = `${daysOfWeek[date.getDay()]}`;
+                if (date.getDate() === currentDate.getDate()) {
+                  time = "Today";
+                }
+                return (
+                  <Grid item xs={3} sm={3} md={3}>
+                    <Card className="card" variant="outlined" key={day.dt}>
+                      <CardContent align="center">
+                        <Typography variant="h6">{time}</Typography>
+                        <CardMedia
+                          image={`https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
+                          alt="weather status icon"
+                          className="weather-icon"
+                        />
+                        <Typography>
+                          Max: {kelvinToC(day.temp.max)}&deg; C
+                        </Typography>
+                        <Typography>
+                          Min: {kelvinToC(day.temp.min)}&deg; C
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                );
+              })}
+            </Grid>
           </div>
         </>
       )}
