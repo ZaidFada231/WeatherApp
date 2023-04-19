@@ -1,4 +1,14 @@
 import { useEffect, useState } from "react";
+import {
+  Card,
+  CardContent,
+  Typography,
+  CardMedia,
+  Grid,
+  Button,
+  TextField,
+} from "@mui/material";
+
 import "./App.css";
 
 function App() {
@@ -61,55 +71,86 @@ function App() {
   console.log(weatherData);
 
   return (
-    <>
+    <div className="weather-info">
       <h3>Weather App</h3>
-      <label class="col-form-label">Enter Location :</label>
       <div>
-        <input
+        <TextField
+          id="outlined-basic"
           type="text"
-          id="location-name"
+          label="Enter Location :"
           onChange={inputHandler}
           value={getCity}
         />
       </div>
-      <button className="btn btn-primary mt-2" onClick={submitHandler}>
+      <br></br>
+      <Button variant="outlined" onClick={submitHandler}>
         Search: Hit 2 times
-      </button>
+      </Button>
       <br></br>
       {weatherData.current && (
         <>
-          <img
-            src={`https://openweathermap.org/img/wn/${weatherData.current.weather[0].icon}@2x.png`}
-            alt="weather status icon"
-            className="weather-icon"
-          />
-          <p className="h2">
-            Currently: {kelvinToC(weatherData.current.temp)}&deg; C
-          </p>
-          <p className="h3">
-            Feels like: {kelvinToC(weatherData.current.feels_like)}&deg; C
-          </p>
-          <div style={{ display: "flex", flexWrap: "wrap" }}>
-            {weatherData.hourly.slice(0, 24).map((hour) => {
-              console.log(hour);
-              const date = new Date(hour.dt * 1000);
-              const time = `${date.getHours()}:00`;
-              return (
-                <div key={hour.dt}>
-                  <p>{kelvinToC(hour.temp)}&deg; C</p>
-                  <p>{time}</p>
-                  <img
-                    src={`https://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`}
-                    alt="weather status icon"
-                    className="weather-icon"
-                  />
-                </div>
-              );
-            })}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "30vh",
+            }}
+          >
+            <Card>
+              <CardContent>
+                <CardMedia
+                  image={`https://openweathermap.org/img/wn/${weatherData.current.weather[0].icon}@2x.png`}
+                  alt="weather status icon"
+                  className="weather-icon-main"
+                />
+                <Typography>
+                  Currently: {kelvinToC(weatherData.current.temp)}&deg; C
+                </Typography>
+                <Typography>
+                  Feels like: {kelvinToC(weatherData.current.feels_like)}&deg; C
+                </Typography>
+              </CardContent>
+            </Card>
+          </div>
+          <div>
+            <h4 className="weather-info">Hourly:</h4>
+            <br></br>
+            <Grid container spacing={1}>
+              {weatherData.hourly.slice(0, 24).map((hour) => {
+                console.log(hour);
+                const date = new Date(hour.dt * 1000);
+                const time = `${date.getHours()}:00`;
+                return (
+                  <Grid item xs={1} sm={1} md={1}>
+                    <Card className="card" variant="outlined" key={hour.dt}>
+                      <CardContent
+                        style={{
+                          justifyContent: "center",
+                          height: 75,
+                          width: 75,
+                        }}
+                      >
+                        <Typography>{time}</Typography>
+                        <CardMedia
+                          image={`https://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`}
+                          alt="weather status icon"
+                          className="weather-icon"
+                        />
+                        <Typography>{kelvinToC(hour.temp)}&deg; C</Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </div>
+          <div>
+            <h4 className="weather-info">This Week:</h4>
           </div>
         </>
       )}
-    </>
+    </div>
   );
 }
 
