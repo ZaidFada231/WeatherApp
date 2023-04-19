@@ -34,7 +34,7 @@ function App() {
   const [city, setCity] = useState("London");
   const [lat, setLat] = useState(51.5073219);
   const [lon, setLon] = useState(-0.1276474);
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [isDarkTheme, setIsDarkTheme] = useState(true);
 
   const API_key = process.env.REACT_APP_api_key;
   const API_url = new URL("http://api.openweathermap.org/geo/1.0/direct?");
