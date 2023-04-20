@@ -6,12 +6,6 @@ import {
   CardMedia,
   Grid,
   Button,
-  TextField,
-  CardHeader,
-  FormGroup,
-  FormControlLabel,
-  Switch,
-  CssBaseline,
 } from "@mui/material";
 
 const News = () => {
@@ -33,7 +27,6 @@ const News = () => {
   console.log(news);
   return (
     <div>
-      <br></br>
       <Grid container spacing={1}>
         {news.map((article, index) => (
           <Grid item xs={2} sm={4} md={3}>

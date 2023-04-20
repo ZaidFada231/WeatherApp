@@ -206,8 +206,9 @@ function App() {
             </div>
           </>
         )}
+        <h4>Top news of the day:</h4>
+        <News></News>
       </div>
-      <News></News>
     </ThemeProvider>
   );
 }
