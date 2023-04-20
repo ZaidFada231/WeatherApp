@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import News from "./News";
 import {
   Card,
   CardContent,
@@ -206,6 +207,7 @@ function App() {
           </>
         )}
       </div>
+      <News></News>
     </ThemeProvider>
   );
 }
