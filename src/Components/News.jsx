@@ -40,7 +40,7 @@ const News = () => {
             <Card className="card" key={index}>
               <CardContent align="center">
                 <Typography variant="h5">{article.title}</Typography>
-                <Typography> {article.per_facet[0]} </Typography>
+                <Typography> {article.byline} </Typography>
                 <br></br>
                 <Typography>{article.abstract}</Typography>
                 <br></br>
@@ -61,29 +61,4 @@ const News = () => {
     </div>
   );
 };
-
-{
-  /* <Grid container spacing={1}>
-                {weatherData.hourly.slice(0, 24).map((hour) => {
-                  const date = new Date(hour.dt * 1000);
-                  const time = `${date.getHours()}:00`;
-                  return (
-                    <Grid item xs={1} sm={1} md={1}>
-                      <Card className="card" key={hour.dt}>
-                        <CardContent align="center">
-                          <Typography variant="h6">{time}</Typography>
-                          <CardMedia
-                            image={`https://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`}
-                            alt="weather status icon"
-                            className="weather-icon"
-                          />
-                          <Typography>{kelvinToC(hour.temp)}&deg; C</Typography>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  );
-                })}
-              </Grid> */
-}
-
 export default News;
